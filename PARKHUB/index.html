@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <title>Parking Lot Management</title>
+</head>
+<body>
+  
+  <!-- Header with Navbar -->
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="parking.jpeg" alt="Parking Logo" id="navbar-logo">
+          <span class="ms-2 fw-bold">Parking Lot Management</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#add-car">Add Car</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#car-list">Car List</a>
+            </li>
+            <!-- Additional Links as Needed -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Dashboard Section -->
+  <section class="container mt-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary shadow h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Total Cars Parked</h5>
+              <p class="card-text display-6" id="totalCars">0</p>
+            </div>
+            <i class="fas fa-car fa-3x"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-secondary shadow h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Available Spots</h5>
+              <p class="card-text display-6" id="availableSpots">0</p>
+            </div>
+            <i class="fas fa-parking fa-3x"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success shadow h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Recently Parked</h5>
+              <p class="card-text display-6" id="recentlyParked">0</p>
+            </div>
+            <i class="fas fa-history fa-3x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Main Content -->
+  <main class="container mt-5">
+    <!-- Add Car Form -->
+    <section class="form-container" id="add-car">
+      <div class="card shadow">
+        <div class="card-body">
+          <form class="w-100" id="entryForm" novalidate>
+            <h4 class="mb-4">Add Car to Parking Lot</h4>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="owner" class="form-label">Owner <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="owner" placeholder="Owner Name" required>
+                <div class="invalid-feedback">
+                  Please enter the owner's name.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="car" class="form-label">Car <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="car" placeholder="Car Model" required>
+                <div class="invalid-feedback">
+                  Please enter the car model.
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="licensePlate" class="form-label">License Plate <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="licensePlate" placeholder="e.g., AB-123-CD" pattern="^[A-Z]{2}-\d{3}-[A-Z]{2}$" required>
+              <div class="form-text">Format: AB-123-CD</div>
+              <div class="invalid-feedback">
+                Please enter a valid license plate (e.g., AB-123-CD).
+              </div>
+            </div>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="entryDate" class="form-label">Entry Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="entryDate" required>
+                <div class="invalid-feedback">
+                  Please select the entry date.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exitDate" class="form-label">Exit Date</label>
+                <input type="date" class="form-control" id="exitDate">
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 mt-4" id="btnAdd">Add Car</button>
+          </form>
+          <div id="feedback" class="mt-3"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Car List Table -->
+    <section class="table-container mt-5" id="car-list">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>List of Cars in Parking Lot</h4>
+        <input type="text" class="form-control w-50" id="searchInput" placeholder="Search...">
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover" id="parkingTable">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" data-sort="owner" class="sortable">Owner <i class="fas fa-sort ms-1"></i></th>
+              <th scope="col" data-sort="car" class="sortable">Car <i class="fas fa-sort ms-1"></i></th>
+              <th scope="col" data-sort="licensePlate" class="sortable">License Plate <i class="fas fa-sort ms-1"></i></th>
+              <th scope="col" data-sort="entryDate" class="sortable">Entry Date <i class="fas fa-sort ms-1"></i></th>
+              <th scope="col" data-sort="exitDate" class="sortable">Exit Date <i class="fas fa-sort ms-1"></i></th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Dynamic Content -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Edit Car Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="editForm" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Parking Entry</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <input type="hidden" id="editId">
+          
+          <div class="mb-3">
+            <label for="editOwner" class="form-label">Owner <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="editOwner" required>
+            <div class="invalid-feedback">
+              Please enter the owner's name.
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editCar" class="form-label">Car <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="editCar" required>
+            <div class="invalid-feedback">
+              Please enter the car model.
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editLicensePlate" class="form-label">License Plate <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="editLicensePlate" pattern="^[A-Z]{2}-\d{3}-[A-Z]{2}$" required>
+            <div class="form-text">Format: AB-123-CD</div>
+            <div class="invalid-feedback">
+              Please enter a valid license plate (e.g., AB-123-CD).
+            </div>
+          </div>
+          
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="editEntryDate" class="form-label">Entry Date <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="editEntryDate" required>
+              <div class="invalid-feedback">
+                Please select the entry date.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="editExitDate" class="form-label">Exit Date</label>
+              <input type="date" class="form-control" id="editExitDate">
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer bg-gradient-purple text-white py-4">
+    <div class="container text-center" style="color: black;">
+      &copy; 2024 Parking Lot Management. All rights reserved.
+    </div>
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="./core.js"></script>
+</body>
+</html>
